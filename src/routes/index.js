@@ -1,7 +1,10 @@
+import CartPage from '../pages/CartPage/CartPage'
+import CategoryProductPage from '../pages/CategoryProductPage/CategoryProductPage'
 import CompanyDetailsPage from '../pages/CompanyDetailsPage/CompanyDetailsPage'
 import HomePage from '../pages/HomePage/HomePage'
 import JobDetailsPage from '../pages/JobDetailsPage/JobDetailsPage'
 import ManagerPage from '../pages/ManagerPage/ManagerPage'
+import ProductDetailsPage from '../pages/ProductDetailsPage/ProductDetailsPage'
 import ProfilePage from '../pages/ProfilePage/ProfilePage'
 import RecruitmentPage from '../pages/RecruitmentPage/RecruitmentPage'
 import SearchJobFieldPage from '../pages/SearchJobPage/SearchJobPage'
@@ -78,5 +81,24 @@ export const routes = [
 
 
     },
+    {
+        path: '/categoryproduct',
+        page: CategoryProductPage,
+
+
+    },
+    {
+        path: '/productdetails',
+        page: ProductDetailsPage,
+
+
+    },
+    {
+        path: '/cart',
+        page: CartPage,
+
+
+    },
+
 
 ]

@@ -19,20 +19,29 @@ display: flex;
 
 `;
 export const WrapperNav = styled.nav`
-background-color: #fff;
+background-color: #111111;
+font-family: "Times New Roman", Times, serif;
   padding: 10px;
   display: flex;
+ 
  
   align-items: center;
   font-size: 16px;
 
   .menu-item {
-    margin: 0 40px;
+    
     position: relative;
     z-index:999;
+    padding:20px;
+    
 
     &:hover .dropdown-content {
       display: block;
+    }
+    &:hover{
+   
+    
+    background-color:#444444;
     }
       &:hover .dropdown-job {
       display: block;

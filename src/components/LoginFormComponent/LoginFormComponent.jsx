@@ -71,14 +71,14 @@ const LoginFormComponent = () => {
 
             <WrapperLogin>
                 <form action="">
-                    <h1>Login</h1>
+                    <h1>Đăng nhập</h1>
                     <WrapperInputBox>
                         <InputForm style={{ marginBottom: '10px', width: '400px', height: '10px' }} placeholder="Email" value={email} onChange={onChangeHandleEmail} />
                         <FaUserAlt className="icon" />
 
                     </WrapperInputBox>
                     <WrapperInputBox>
-                        <InputForm placeholder="password" style={{ marginBottom: '10px', width: '400px', height: '10px' }} value={password} type="password" onChange={onChangeHandlePassword} />
+                        <InputForm placeholder="Password" style={{ marginBottom: '10px', width: '400px', height: '10px' }} value={password} type="password" onChange={onChangeHandlePassword} />
 
                         <FaLock className="icon" />
                     </WrapperInputBox>
@@ -96,11 +96,11 @@ const LoginFormComponent = () => {
 
 
 
-                        textButton={'Login'}
+                        textButton={'Đăng nhập'}
 
                     ></ButtonComponent>
                     <WrapperRegister>
-                        <p>Don't have an account<WrapperTextLight onClick={handleNavigateSignUp} style={{ cursor: 'pointer' }}> Register</WrapperTextLight></p>
+                        <p>Bạn chưa có tài khoản?<WrapperTextLight onClick={handleNavigateSignUp} style={{ cursor: 'pointer' }}> Đăng Ký</WrapperTextLight></p>
                     </WrapperRegister>
                 </form>
             </WrapperLogin>

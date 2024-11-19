@@ -47,8 +47,10 @@ export const WrapperSliderStyle = styled.div` // Thay đổi từ Slider sang di
     position: relative;
     width:90%;
     
+    
     margin:0px auto;
-
+    border-radius: 20px;
+    overflow: hidden;
     
     & .slick-arrow.slick-prev {
         left: 12px;
@@ -56,7 +58,7 @@ export const WrapperSliderStyle = styled.div` // Thay đổi từ Slider sang di
         z-index: 10;
         &::before {
             font-size: 40px;
-            color: #fff;
+            color: #444444;
         }
     }
 
@@ -66,7 +68,7 @@ export const WrapperSliderStyle = styled.div` // Thay đổi từ Slider sang di
         z-index: 10;
         &::before {
             font-size: 40px;
-            color: #fff;
+            color: #444444;
         }
     }
 
@@ -83,7 +85,7 @@ export const WrapperSliderStyle = styled.div` // Thay đổi từ Slider sang di
         li.slick-active {
             button {
                 &::before {
-                    color: #fff;
+                    color: #444444;
                 }
             }
         }

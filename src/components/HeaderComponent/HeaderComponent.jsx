@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../Assets/logo.png';
+import topzone from '../Assets/topzone.png';
 import camera1 from '../Assets/camera1.png';
 import { WrapperDropdownContent, WrapperDropdownJob, WrapperHeader, WrapperNav } from './style';
 import { useSelector } from 'react-redux';
@@ -28,50 +29,29 @@ const HeaderComponent = () => {
 
         <WrapperNav>
             <div className="logo">
-                <img style={{ width: '150px' }} src={logo} alt="logo" />
+                <img style={{ width: '150px', height: '50px', marginLeft: '250px' }} src={topzone} alt="logo" />
             </div>
             <div className="menu-item">
-                <a href="#">Việc làm</a>
-                <WrapperDropdownJob className="dropdown-job">
-                    <div>
-                        <h4>Tiện ích cho bạn</h4>
-                        <a href="#"><span className="icon">🔍</span>Tìm việc làm</a>
-                        <a href="#"><span className="icon">📊</span>Việc làm của tôi</a>
-                        <a href="#"><span className="icon">💼</span>Việc làm theo ngành nghề</a>
-                        <a href="#"><span className="icon">💰</span>Việc làm bán thời gian/thực tập</a>
+                <a href="#" style={{ color: "#fff" }}>Iphone</a>
 
-                    </div>
-                </WrapperDropdownJob>
             </div>
             <div className="menu-item">
-                <a href="#">CV & cover letter</a>
+                <a href="#" style={{ color: "#fff" }}>Mac</a>
             </div>
             <div className="menu-item">
-                <a href="#">Tiện ích/Cẩm nang</a>
-                <WrapperDropdownContent className="dropdown-content">
-                    <div>
-                        <h4>Tiện ích cho bạn</h4>
-                        <a href="#"><span className="icon">🧠</span>Trắc nghiệm tính cách MBTI</a>
-                        <a href="#"><span className="icon">📊</span>Trắc nghiệm DISC</a>
-                        <a href="#"><span className="icon">🔢</span>Trắc nghiệm đa trí thông minh</a>
-                        <a href="#"><span className="icon">💰</span>Tính lương Gross - Net</a>
-                        <a href="#"><span className="icon">🛡️</span>Tính bảo hiểm thất nghiệp</a>
-                        <a href="#"><span className="icon">🚫</span>Tool check chống lừa đảo</a>
-                    </div>
-                    <hr />
-                    <div>
-                        <h4>Cẩm nang</h4>
-                        <a href="#"><span className="icon">📚</span>Cẩm nang nghề nghiệp</a>
-                        <a href="#"><span className="icon">🔍</span>Cách tìm việc & ứng tuyển</a>
-                        <a href="#"><span className="icon">💡</span>Câu hỏi cho phỏng vấn</a>
-                        <a href="#"><span className="icon">📄</span>CV xin việc/Cover letter</a>
-                        <a href="#"><span className="icon">💼</span>Kỹ năng trong phỏng vấn</a>
-                        <a href="#"><span className="icon highlight">🔥</span>Mẹo & kinh nghiệm</a>
-                    </div>
-                </WrapperDropdownContent>
+                <a href="#" style={{ color: "#fff" }}>iPad</a>
+
             </div>
             <div className="menu-item">
-                <a href="#">Trang nhà tuyển dụng</a>
+                <a href="#" style={{ color: "#fff" }}>Watch</a>
+
+            </div>
+            <div className="menu-item">
+                <a href="#" style={{ color: "#fff" }}>Tai nghe, Loa</a>
+
+            </div>
+            <div className="menu-item">
+                <a href="#" style={{ color: "#fff" }}>Phụ Kiện</a>
 
             </div>
             {user?.access_token ? (
@@ -133,8 +113,8 @@ const HeaderComponent = () => {
 
             ) : (
                 <div className="auth-links">
-                    <a href="#" onClick={() => navigate("/signin")}>Đăng nhập</a>
-                    <a href="#" onClick={() => navigate("/signup")}>Đăng ký</a>
+                    <a href="#" style={{ color: "#fff" }} onClick={() => navigate("/signin")}>Đăng nhập</a>
+                    <a href="#" style={{ color: "#fff" }} onClick={() => navigate("/signup")}>Đăng ký</a>
                 </div>
             )}
         </WrapperNav>

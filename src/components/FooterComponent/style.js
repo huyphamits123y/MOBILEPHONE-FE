@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 export const FooterContainer = styled.footer`
-  background-color: #f8f8f8;
+  background-color: #444444;
   padding: 20px 50px;
   border-top: 1px solid #ccc;
 `;
@@ -15,6 +15,7 @@ export const FooterTop = styled.div`
 
 export const FooterSection = styled.div`
   flex: 1;
+  
   padding: 0 20px;
 `;
 
@@ -34,7 +35,7 @@ export const ContactInfo = styled.div`
   p {
     margin: 5px 0;
     font-size: 18px;
-    color: #333;
+    color: #fff;
   }
 `;
 
@@ -51,7 +52,7 @@ export const Icon = styled.div`
 
 export const FooterHeading = styled.h3`
   font-weight:bold;
-  color: #000066;
+  color: #fff;
   font-size: 22px;
   margin-bottom: 10px;
   cursor:pointer;
@@ -60,7 +61,7 @@ export const FooterHeading = styled.h3`
 export const FooterLink = styled.a`
   display: block;
   cursor:pointer;
-  color: #555;
+  color: #fff;
   font-size: 18px;
   margin-bottom: 8px;
   text-decoration: none;
@@ -78,7 +79,7 @@ export const FooterBottom = styled.div`
 export const CompanyInfo = styled.div`
   p {
   font-weight:bold;
-  color: #000066;
+  color: #fff;
   font-size: 20px;
     margin: 5px 0;
    

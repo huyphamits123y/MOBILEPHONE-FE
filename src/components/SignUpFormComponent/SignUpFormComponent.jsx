@@ -70,7 +70,7 @@ const SignUpFormComponent = () => {
             <img style={{ width: '280px', height: '433px' }} src={login} alt="login"></img>
             <WrapperLogin>
                 <form action="">
-                    <h1>Register</h1>
+                    <h1>Đăng Ký</h1>
                     <WrapperInputBox>
                         <InputForm placeholder="Name" style={{ marginBottom: '10px', width: '400px', height: '10px' }} value={name} onChange={onChangeHandleName} />
 
@@ -91,7 +91,7 @@ const SignUpFormComponent = () => {
                         <label>
                             <input type="checkbox" />Remember me
                         </label>
-                        <a href="#">Forgot password</a>
+
                     </WrapperRemember>
                     <ButtonComponent
                         disable={!email.length || !password.length || !name.length}
@@ -100,7 +100,7 @@ const SignUpFormComponent = () => {
 
 
 
-                        textButton={'Register'}
+                        textButton={'Đăng Ký'}
 
                     ></ButtonComponent>
                     <Modal

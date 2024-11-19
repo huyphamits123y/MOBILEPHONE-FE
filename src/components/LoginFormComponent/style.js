@@ -23,9 +23,10 @@ export const WrapperBody = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: rgb(238,174,202);
-background: rgb(238,174,202);
-background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,221,233,1) 100%);
+//   background: rgb(238,174,202);
+// background: rgb(238,174,202);
+// background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,221,233,1) 100%);
+  background-color: #444444;
   background-position: center;
 `;
 

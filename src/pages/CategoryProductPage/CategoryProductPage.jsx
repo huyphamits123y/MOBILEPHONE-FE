@@ -16,9 +16,7 @@ import slider2 from '../../components/Assets/slider2.png';
 import ip16s from '../../components/Assets/ip16s.png';
 import mac from '../../components/Assets/mac.png';
 import background1 from '../../components/Assets/background1.png';
-import ReactDOM from 'react-dom'
-import { faApple } from '@fortawesome/free-brands-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import slider3 from '../../components/Assets/slider3.png';
 import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import CarouselComponent from "../../components/CarouselComponent/CarouselComponent";
@@ -28,9 +26,9 @@ import JobListing from "../../components/JobComponent/JobComponent";
 import JobComponent from "../../components/JobComponent/JobComponent";
 import FooterComponent from "../../components/FooterComponent/FooterComponent";
 import { useSelector } from "react-redux";
-import { WrapperProducts } from "./style";
-import CarouselProductComponent from "../../components/CarouselProductComponent/CarouselProductComponent";
-const HomePage = () => {
+import { MenuContainer, MenuItem, WrapperProducts } from "./style";
+import { useState } from "react";
+const CategoryProductPage = () => {
     const arrImages = [
         { src: slider4 },
         { src: slider5 },
@@ -45,35 +43,36 @@ const HomePage = () => {
         { name: 'Nhất Tín Logistics', jobs: '29 việc làm', arrImages: listpk },
 
     ];
+    const [selectedItem, setSelectedItem] = useState('Tất cả');
+    const menuItems = ['Tất cả', 'iPhone 16', 'iPhone 15', 'iPhone 14', 'iPhone 13', 'iPhone 12', 'iPhone 11'];
+
     const user = useSelector((state) => state?.user);
     console.log('user', user)
     return (
         <div style={{ backgroundColor: "#444444" }}>
             <HeaderComponent></HeaderComponent>
             {/* <MainContentComponent></MainContentComponent> */}
-
             <div style={{ marginTop: "30px" }}>
                 <SliderComponent arrImages={arrImages} ></SliderComponent>
-
             </div>
-
-
             <h1 style={{ color: '#fff', padding: '10px', textAlign: 'center' }}>Danh mục</h1>
             <CarouselComponent items={items} />
-            <h1 style={{ color: '#fff', padding: '10px', textAlign: 'center' }}>iPhone</h1>
-            <CarouselProductComponent items={items} />
-            <h1 style={{ color: '#fff', padding: '10px', textAlign: 'center' }}>Mac</h1>
-            <CarouselProductComponent items={items} />
-            <h1 style={{ color: '#fff', padding: '10px', textAlign: 'center' }}>iPad</h1>
-            <CarouselProductComponent items={items} />
-            <h1 style={{ color: '#fff', padding: '10px', textAlign: 'center' }}>Watch</h1>
-            <CarouselProductComponent items={items} />
-            <h1 style={{ color: '#fff', padding: '10px', textAlign: 'center' }}>Tai nghe, Loa</h1>
-            <CarouselProductComponent items={items} />
-            <h1 style={{ color: '#fff', padding: '10px', textAlign: 'center' }}>Phụ kiện</h1>
-            <CarouselProductComponent items={items} />
-
-            {/* <div id="container" style={{ width: '1270px', margin: '0 auto', paddingBottom: '20px' }}>
+            {/* <div>
+                <h1 style={{ textAlign: 'center', color: '#1E90FF', padding: '10px' }}>Việc làm HOT</h1>
+            </div> */}\
+            {/* <JobComponent /> */}
+            <MenuContainer>
+                {menuItems.map((item) => (
+                    <MenuItem
+                        key={item}
+                        selected={selectedItem === item}
+                        onClick={() => setSelectedItem(item)}
+                    >
+                        {item}
+                    </MenuItem>
+                ))}
+            </MenuContainer>
+            <div id="container" style={{ width: '1270px', margin: '10px auto', paddingBottom: '20px' }}>
                 <WrapperProducts>
                     <CardComponent
                         key={1}
@@ -181,7 +180,7 @@ const HomePage = () => {
                         id={1}
                     />
                 </WrapperProducts>
-            </div> */}
+            </div>
 
             <div >
                 <img style={{ width: '100%', height: '400px' }} src={tgdd} alt="background"></img>
@@ -190,4 +189,4 @@ const HomePage = () => {
         </div>
     )
 }
-export default HomePage
+export default CategoryProductPage

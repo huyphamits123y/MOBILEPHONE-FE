@@ -41,7 +41,7 @@ const SearchBarComponent = () => {
 
         <SearchContainer>
             <SearchBox>
-                <SearchInput type="text" placeholder="Từ khóa, chức danh hoặc công ty" />
+                <SearchInput type="text" placeholder="Từ khóa, chức danh hoặc công ty" style={{ color: "black" }} />
 
 
                 {/* <WrapperDiv>

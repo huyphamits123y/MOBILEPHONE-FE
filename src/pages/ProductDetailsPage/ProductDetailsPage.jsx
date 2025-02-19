@@ -6,37 +6,83 @@ import ip16s2 from '../../components/Assets/ip16s2.png';
 import ip16s3 from '../../components/Assets/ip16s3.png';
 import tgdd from '../../components/Assets/tgdd.png';
 import FooterComponent from "../../components/FooterComponent/FooterComponent";
-import { useSelector } from "react-redux";
+
 import { ImageContainer, LeftSection, MenuContainer, MenuItem, OptionButton, Options, Price, ProductPageContainer, RightSection, Thumbnail, ThumbnailGallery, Title, WrapperProducts } from "./style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import * as ProductService from '../../services/ProductService';
+import { addOrderProduct } from "../../redux/slides/OrderSlide";
+import LikeButtonComponent from "../../components/LikeButtonComponent/LikeButtonComponent";
+import CommentComponent from "../../components/CommentComponent/CommentComponent";
+import { convertPrice, initFacebookSDK } from "../../utils";
+
 const ProductDetailsPage = () => {
     const [selectedStorage, setSelectedStorage] = useState('128GB');
     const [selectedColor, setSelectedColor] = useState('White');
 
+    const user = useSelector((state) => state?.user);
     const storages = ['128GB', '256GB', '512GB', '1TB'];
+    const [product, setProduct] = useState({});
+    const [numProduct, setNumProduct] = useState(1)
+    const dispatch = useDispatch()
+
+
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const location = useLocation();
+    useEffect(() => {
+        initFacebookSDK()
+
+    }, [])
+    useEffect(() => {
+        const fetchGetDetailsProduct = async () => {
+
+            const res = await ProductService.getDetailsProduct(id);
+            setProduct(res.data);
+
+            return res.data;
+
+
+
+        }
+        fetchGetDetailsProduct();
+    }, [id])
+
+    console.log('data', product)
+    console.log('userID', user?.id);
+    console.log('name', product.name);
+    console.log('image', product.image);
+    console.log('price', product.price);
+    console.log('productid', product._id)
     const handleAddOrderProduct = () => {
-        // if (!user?.id) {
-        //     navigate('/sign-in', { state: location?.pathname })
-        // } else {
-        //     dispatch(addOrderProduct({
+        if (!user?.id) {
+            navigate('/sign-in', { state: location?.pathname })
+        } else {
+            console.log('addproduct')
+            dispatch(addOrderProduct({
 
 
-        //         orderItem: {
-        //             userId: user?.id,
-        //             name: productdetails?.name,
-        //             amount: numProduct,
-        //             image: productdetails?.image,
-        //             price: productdetails?.price,
-        //             product: productdetails?._id,
+                orderItem: {
+                    userId: user?.id,
+                    name: product?.name,
+                    amount: numProduct,
+                    image: product?.image,
+                    price: product?.price,
+                    product: product?._id,
+                    provinces: "",
+                    districts: "",
+                    wards: "",
+                    location: "",
 
-        //         },
+                },
 
 
-        //     }))
+            }))
 
 
-        // }
+        }
 
     }
     const colors = ['White', 'Gold', 'Gray'];
@@ -45,15 +91,15 @@ const ProductDetailsPage = () => {
     const thumbnails = [ip16s, ip16s1, ip16s2, ip16s3]; // Replace with actual URLs
     return (
         <div style={{ backgroundColor: "#444444" }}>
-            <HeaderComponent></HeaderComponent>
+            <HeaderComponent user={user}></HeaderComponent>
 
             <ProductPageContainer>
                 <LeftSection>
                     <>
                         <ImageContainer>
-                            <img src={selectedImage} alt="Product" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+                            <img src={product.image} alt="Product" style={{ maxWidth: '100%', maxHeight: '100%' }} />
                         </ImageContainer>
-                        <ThumbnailGallery>
+                        {/* <ThumbnailGallery>
                             {thumbnails.map((thumb, index) => (
                                 <Thumbnail
                                     key={index}
@@ -62,13 +108,22 @@ const ProductDetailsPage = () => {
                                     onClick={() => setSelectedImage(thumb)}
                                 />
                             ))}
-                        </ThumbnailGallery>
+                        </ThumbnailGallery> */}
+                        {/* <ThumbnailGallery>
+
+                            <Thumbnail
+                                key={1}
+                                src={product.image}
+
+                            />
+
+                        </ThumbnailGallery> */}
                     </>
                 </LeftSection>
                 <RightSection>
                     <div>
-                        <Title>iPhone 16 Pro 128GB</Title>
-                        <Price>28.990.000₫</Price>
+                        <Title>{product.name}</Title>
+                        <Price>{product.price}₫</Price>
 
                         <div>
                             <h4>Storage:</h4>
@@ -99,7 +154,9 @@ const ProductDetailsPage = () => {
                                 ))}
                             </Options>
                         </div>
+                        <LikeButtonComponent dataHref="https://developers.facebook.com/docs/plugins/" />
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+
                             <ButtonComponent
                                 size={40}
                                 bordered={false}
@@ -121,7 +178,9 @@ const ProductDetailsPage = () => {
                     </div>
 
                 </RightSection>
+
             </ProductPageContainer>
+            <CommentComponent dataHref="https://developers.facebook.com/docs/plugins/comments#configurator" width="1270" />
 
 
 

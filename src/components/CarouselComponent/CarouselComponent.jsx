@@ -15,15 +15,18 @@ const CarouselComponent = ({ items }) => {
     };
 
     const navigate = useNavigate();
+    const handleNavigateType = (type) => {
+        navigate("/categoryproduct", { state: type })
+    }
     return (
         <WrapperSliderStyle>
             <Slider {...settings}>
                 {/* <ItemCard> */}
                 {items.map((item, index) => (
                     <div key={index} style={{ padding: '0 10px', marginLeft: '100px' }}>
-                        <ItemCard onClick={() => navigate("/categoryproduct")}>
-                            <img src={item.arrImages} alt="slider" width="100%" height="274px" />
-                            <p style={{ padding: '10px', background: '#333333', width: '200px', margin: '10px auto', color: '#fff' }}>{item.jobs}</p>
+                        <ItemCard onClick={() => handleNavigateType(item.name)}>
+                            <img src={item.image} alt="slider" width="100%" height="274px" />
+                            <p style={{ padding: '10px', background: '#333333', width: '200px', margin: '10px auto', color: '#fff' }}>{item.name}</p>
                         </ItemCard>
                     </div>
                 ))}

@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const WrapperLogin = styled.div`
       width:480px;
+      height:480px;
      background: rgb(215,227,230);
 background: radial-gradient(circle, rgba(215,227,230,1) 0%, rgba(19,19,18,1) 100%);
       border: 2px solid rgba(255, 255, 255, .2);

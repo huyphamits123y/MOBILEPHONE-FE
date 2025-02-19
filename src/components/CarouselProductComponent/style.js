@@ -18,6 +18,7 @@ export const WrapperSliderStyle = styled.div` // Thay đổi từ Slider sang di
 `;
 export const ItemCard = styled.div`
 width: calc(100% - 30px); /* Chiều rộng trừ đi khoảng cách (10px * 2) */
+height:400px;
     margin: 0 10px; /* Khoảng cách ngang giữa các ItemCard */
     border-radius: 15px;
     border: 1px solid #333333;

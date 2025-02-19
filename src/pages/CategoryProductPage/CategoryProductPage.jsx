@@ -1,6 +1,6 @@
 import HeaderComponent from "../../components/HeaderComponent/HeaderComponent"
 import InputForm from "../../components/InputFormComponent/InputFormComponent"
-import MainContentComponent from "../../components/MainContentComponent/MainContentComponent"
+
 import slider1 from '../../components/Assets/slider1.png';
 import slider4 from '../../components/Assets/slider4.png';
 import slider5 from '../../components/Assets/slider5.png';
@@ -22,18 +22,26 @@ import SliderComponent from "../../components/SliderComponent/SliderComponent";
 import CarouselComponent from "../../components/CarouselComponent/CarouselComponent";
 import { CgEnter } from "react-icons/cg";
 import CardComponent from '../../components/CardComponent/CardComponent';
-import JobListing from "../../components/JobComponent/JobComponent";
-import JobComponent from "../../components/JobComponent/JobComponent";
+
 import FooterComponent from "../../components/FooterComponent/FooterComponent";
 import { useSelector } from "react-redux";
 import { MenuContainer, MenuItem, WrapperProducts } from "./style";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useLocation } from 'react-router'
+import * as ProductService from '../../services/ProductService';
+import * as CategoryService from '../../services/CategoryService';
 const CategoryProductPage = () => {
+    const { state } = useLocation();
+    const users = useSelector((state) => state?.user);
+    console.log('state', state);
     const arrImages = [
         { src: slider4 },
         { src: slider5 },
         { src: slider6 }
     ];
+    const [product, setProduct] = useState([])
+    const [category, setCategory] = useState([])
+
     const items = [
         { name: 'FPT Telecom', jobs: '409 việc làm', arrImages: listip },
         { name: 'VUS', jobs: '12 việc làm', arrImages: listmac },
@@ -43,25 +51,51 @@ const CategoryProductPage = () => {
         { name: 'Nhất Tín Logistics', jobs: '29 việc làm', arrImages: listpk },
 
     ];
+    useEffect(() => {
+        const getAllCategorys = async () => {
+            const res = await CategoryService.getAllCategory();
+            setCategory(res.data)
+            return res.data;
+        }
+        getAllCategorys()
+
+
+    }, [])
+    const nameAndImages = category.map((item) => ({
+        name: item.name,
+        image: item.image
+    }));
     const [selectedItem, setSelectedItem] = useState('Tất cả');
     const menuItems = ['Tất cả', 'iPhone 16', 'iPhone 15', 'iPhone 14', 'iPhone 13', 'iPhone 12', 'iPhone 11'];
+    useEffect(() => {
+        const getProductType = async () => {
+            try {
+                // Gọi API để lấy danh sách sản phẩm dựa trên 'iPhone'
+                const res = await ProductService.getAllProductSearchCategory(state);
+                // Gán dữ liệu vào state
+                setProduct(res.data);
+            } catch (error) {
+                console.error("Error fetching products in frontend:", error); // In ra lỗi nếu có
+            }
+        }
+        getProductType();
+
+
+    }, [state])
+    console.log('product', product)
 
     const user = useSelector((state) => state?.user);
     console.log('user', user)
     return (
         <div style={{ backgroundColor: "#444444" }}>
-            <HeaderComponent></HeaderComponent>
+            <HeaderComponent user={users}></HeaderComponent>
             {/* <MainContentComponent></MainContentComponent> */}
             <div style={{ marginTop: "30px" }}>
                 <SliderComponent arrImages={arrImages} ></SliderComponent>
             </div>
             <h1 style={{ color: '#fff', padding: '10px', textAlign: 'center' }}>Danh mục</h1>
-            <CarouselComponent items={items} />
-            {/* <div>
-                <h1 style={{ textAlign: 'center', color: '#1E90FF', padding: '10px' }}>Việc làm HOT</h1>
-            </div> */}\
-            {/* <JobComponent /> */}
-            <MenuContainer>
+            <CarouselComponent items={nameAndImages} />
+            {/* <MenuContainer>
                 {menuItems.map((item) => (
                     <MenuItem
                         key={item}
@@ -71,10 +105,35 @@ const CategoryProductPage = () => {
                         {item}
                     </MenuItem>
                 ))}
-            </MenuContainer>
+                    
+            </MenuContainer> */}
+            <h1 style={{ color: "#fff", textAlign: "center" }}>{state}</h1>
             <div id="container" style={{ width: '1270px', margin: '10px auto', paddingBottom: '20px' }}>
                 <WrapperProducts>
-                    <CardComponent
+                    {
+                        product.map((product) => (
+
+                            <CardComponent
+                                key={product._id}
+                                countInStock={product.countInStock}
+                                description={product.description}
+                                image={product.image}
+                                name={product.name}
+                                price={product.price}
+                                type={product.type}
+                                selled={product.selled}
+                                discount={product.discount}
+                                id={product._id}
+                            />
+
+
+                        ))
+                    }
+
+
+
+
+                    {/* <CardComponent
                         key={1}
                         countInStock={1}
                         description={"huy"}
@@ -178,7 +237,7 @@ const CategoryProductPage = () => {
                         selled={3}
                         discount={3}
                         id={1}
-                    />
+                    /> */}
                 </WrapperProducts>
             </div>
 

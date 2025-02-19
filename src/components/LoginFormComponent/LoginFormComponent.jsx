@@ -8,66 +8,91 @@ import InputForm from "../InputFormComponent/InputFormComponent";
 import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import login from '../../components/Assets/login.png';
-import { Modal, Button } from "antd";
+
+import { jwtDecode } from "jwt-decode";
+
+import { Alert, Button, Input, Modal } from 'antd';
 import { useDispatch } from 'react-redux'
+
 import { updateUser } from "../../redux/slides/userSlide";
 // Import CSS của antd
 const LoginFormComponent = () => {
-    const [email, setEmail] = useState('')
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [password, setPassword] = useState('')
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const [errorMessage, setErrorMessage] = useState('');
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const mutation = useMutationHooks(
+        async (data) => {
+            const res = UserService.loginUser(data)
+            return res;
+        }
+    )
+    const handleGetDetailsUser = async (id, token) => {
+        const res = await UserService.getDetailsUser(id, token)
+        dispatch(updateUser({ ...res?.data, access_token: token }))
+        console.log('res', res)
+
+    }
+    const { data, isSuccess, isError } = mutation;
+    useEffect(() => {
+        if (isSuccess && data?.status === "OK") {
+            if (location?.state) {
+                navigate(location?.state)
+            } else {
+                navigate('/')
+            }
+            console.log('data', data)
+            localStorage.setItem('access_token', JSON.stringify(data?.access_token))
+            if (data?.access_token) {
+                const decoded = jwtDecode(data?.access_token)
+                console.log('decoded', decoded)
+                if (decoded?.id) {
+                    handleGetDetailsUser(decoded?.id, data?.access_token);
+                    console.log('decoded id', decoded?.id);
+                    console.log('decoded token', decoded?.access_token)
+
+
+                }
+            }
+        } else if (isError) {
+
+            setErrorMessage('Tài khoản hoặc mật khẩu không chính xác');
+            setShowAlert(true);
+
+
+        }
+    }, [isSuccess, isError])
+    const handleSignIn = () => {
+        mutation.mutate({
+            email,
+            password
+        })
+    }
     const onChangeHandleEmail = (value) => {
         setEmail(value)
     }
-    const navigate = useNavigate();
-    const handleNavigateSignUp = () => {
-        navigate('/signup')
-
-    }
-
     const onChangeHandlePassword = (value) => {
         setPassword(value)
     }
-    const mutation = useMutationHooks(
-        async (data) => {
-            const res = UserService.loginUser(data);
-            return res
-        }
-    )
-    const { data, isSuccess, isError, error } = mutation
-    console.log('data', data?.accessToken)
-    const handleGetDetailsUser = async () => {
-        const user = await UserService.getDetailsUser(data?.accessToken)
-        console.log('userr', user)
-        dispatch(updateUser({ ...user, access_token: data?.accessToken }))
 
-    }
-    useEffect(() => {
-        if (isSuccess && data) {
-            handleGetDetailsUser()
-            navigate('/')
-        } if (isError && error) {
-            const backendErrorMessage = error.response?.data?.message || 'Login failed.';
-            setErrorMessage(backendErrorMessage)
-            setIsModalVisible(true)
-        }
-    }, [isSuccess, isError])
-    const handleSignin = () => {
-        mutation.mutate({
-            email,
-            password,
-        })
-        console.log('sign-in', email, password)
-    }
     const handleOk = () => {
         setIsModalVisible(false);
     };
+    const handleNavigateSignUp = () => {
+        navigate('/sign-up')
+
+    }
 
     return (
+
         <WrapperBody>
-            <img style={{ width: '280px', height: '404px' }} src={login} alt="login"></img>
+
+            <img style={{ width: '280px', height: '480px' }} src={login} alt="login"></img>
 
             <WrapperLogin>
                 <form action="">
@@ -89,9 +114,10 @@ const LoginFormComponent = () => {
                         <a href="#">Forgot password</a>
                     </WrapperRemember>
 
+
                     <ButtonComponent
                         disable={!email.length || !password.length}
-                        onClick={handleSignin}
+                        onClick={handleSignIn}
                         size={40}
 
 
@@ -102,6 +128,7 @@ const LoginFormComponent = () => {
                     <WrapperRegister>
                         <p>Bạn chưa có tài khoản?<WrapperTextLight onClick={handleNavigateSignUp} style={{ cursor: 'pointer' }}> Đăng Ký</WrapperTextLight></p>
                     </WrapperRegister>
+                    {showAlert && <Alert message={errorMessage} type="error" closable onClose={() => setShowAlert(false)} style={{ marginTop: '2px' }} />}
                 </form>
             </WrapperLogin>
             <Modal

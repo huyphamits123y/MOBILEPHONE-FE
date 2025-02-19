@@ -1,286 +1,214 @@
-import React, { useState } from "react";
-import Select from 'react-select';
-import { Container, FormContainer, FormField, FormFieldd, FormGroup, Input, InputGroup, Label, RadioGroup, RadioInput, RadioLabel, SaveButton, Section, Tab, Textarea, TextArea, Title, ToggleContainer, ToggleLabel } from "./style";
-import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
-import background1 from '../../components/Assets/background1.png';
-import FooterComponent from "../../components/FooterComponent/FooterComponent";
+import React, { useEffect } from 'react'
+import { useState } from 'react'
+import { WrapperHeader, WrapperInput, WrapperLable, WrapperUploadFile } from './style'
+import InputForm from '../../components/InputForm/InputForm'
+import { WrapperContentProfile } from './style'
+import ButtonComponent from "../../components/ButtonComponent/ButtonComponent";
+import { useSelector } from 'react-redux'
+import * as UserService from '../../services/UserService'
+import { useMutationHooks } from '../../hooks/useMutationHook'
+import { message, Button, Upload } from 'antd'
+import { useDispatch } from 'react-redux'
+import { updateUser } from '../../redux/slides/userSlide'
+import { UploadOutlined } from '@ant-design/icons';
+
+import { getBase64 } from '../../utils'
+import HeaderComponent from '../../components/HeaderComponent/HeaderComponent'
+import FooterComponent from '../../components/FooterComponent/FooterComponent'
 const ProfilePage = () => {
-    // return (
-    //     <div>
-    //         <HeaderComponent></HeaderComponent>
-    //         <Container>
-    //             <Title>Mong muốn của bạn</Title>
-    //             <FormGroup>
-    //                 <Label>Ngành nghề</Label>
-    //                 <Select multiple>
-    //                     <option>IT / Phần mềm / IOT / Điện tử viễn thông</option>
-    //                     <option>Ngành khác</option>
-    //                 </Select>
-    //             </FormGroup>
-    //             <FormGroup>
-    //                 <Label>Chức danh</Label>
-    //                 <Select multiple>
-    //                     <option>Thực tập sinh lập trình</option>
-    //                     <option>Vị trí khác</option>
-    //                 </Select>
-    //             </FormGroup>
-    //             <FormGroup>
-    //                 <Label>Địa điểm làm việc</Label>
-    //                 <Select multiple>
-    //                     <option>Hồ Chí Minh</option>
-    //                     <option>Hà Nội</option>
-    //                 </Select>
-    //             </FormGroup>
-    //             <FormGroup>
-    //                 <Label>Mức lương (VNĐ)</Label>
-    //                 <Input type="number" placeholder="0" /> Đến <Input type="number" placeholder="0" />
-    //             </FormGroup>
-    //             <FormGroup>
-    //                 <Label>Mong muốn của bạn</Label>
-    //                 <TextArea placeholder="Thông tin thêm về công việc bạn mong muốn tìm và ứng tuyển..." />
-    //             </FormGroup>
-    //             <ToggleContainer>
-    //                 <input type="checkbox" id="notify" />
-    //                 <ToggleLabel htmlFor="notify">Nhận thông báo</ToggleLabel>
-    //             </ToggleContainer>
-    //             <RadioGroup>
-    //                 <RadioLabel>
-    //                     <RadioInput type="radio" name="frequency" value="always" />
-    //                     Luôn luôn
-    //                 </RadioLabel>
-    //                 <RadioLabel>
-    //                     <RadioInput type="radio" name="frequency" value="daily" />
-    //                     Hàng ngày
-    //                 </RadioLabel>
-    //                 <RadioLabel>
-    //                     <RadioInput type="radio" name="frequency" value="weekly" />
-    //                     Hàng tuần
-    //                 </RadioLabel>
-    //             </RadioGroup>
-    //             <SaveButton>Lưu</SaveButton>
-    //         </Container>
-    //     </div>
+    const user = useSelector((state) => state.user)
+    const [email, setEmail] = useState('');
+    const [name, setName] = useState('');
+    const dispatch = useDispatch()
+    const [phone, setPhone] = useState('');
+    const [address, setAddress] = useState('');
+    useEffect(() => {
+        setEmail(user?.email);
+        setName(user?.name);
+        setPhone(user?.phone);
+        setAddress(user?.address)
 
-    // )
+    }, [user])
+    const handleOnchangeName = (value) => {
+        setName(value)
+
+    }
+    const handleOnchangePhone = (value) => {
+        setPhone(value)
+
+    }
+
+    const handleOnchangeAddress = (value) => {
+        setAddress(value)
+
+    }
+    const handleOnchangeEmail = (value) => {
+        setEmail(value)
+
+    }
+    const handleupdate = () => {
+        mutation.mutate({ id: user?.id, email, name, address, phone, access_token: user?.access_token })
+
+    }
+    const mutation = useMutationHooks(
+        async (data) => {
+            const { id, access_token, ...rests } = data
+            const res = UserService.updateUser(id, rests, access_token)
+            return res;
+        }
+    )
+    const { data, isSuccess, IsError } = mutation;
+    useEffect(() => {
+        if (isSuccess) {
+            message.success()
+            handleGetDetailsUser(user?.id, user?.access_token)
+
+        } else if (IsError) {
+            message.error()
 
 
-
-    // const [industry, setIndustry] = useState(null);
-    // const [title, setTitle] = useState(null);
-    // const [location, setLocation] = useState(null);
-
-    // const industries = [
-    //     { value: 'it', label: 'IT / Phần mềm / IOT / Điện tử viễn thông' },
-    //     // Add more options here
-    // ];
-
-    // const jobTitles = [
-    //     { value: 'intern', label: 'Thực tập sinh lập trình' },
-    //     // Add more options here
-    // ];
-
-    // const locations = [
-    //     { value: 'hcm', label: 'Hồ Chí Minh' },
-    //     // Add more options here
-    // ];
-
-    // return (
-    //     <FormContainer>
-    //         {/* Left section for 'Mong muốn của bạn' */}
-    //         <Section>
-    //             <Title>Mong muốn của bạn</Title>
-    //             <InputGroup>
-    //                 <Label>Ngành nghề</Label>
-    //                 <Select
-    //                     options={industries}
-    //                     value={industry}
-    //                     onChange={setIndustry}
-    //                     placeholder="Chọn ngành nghề"
-    //                 />
-    //             </InputGroup>
-    //             <InputGroup>
-    //                 <Label>Chức danh</Label>
-    //                 <Select
-    //                     options={jobTitles}
-    //                     value={title}
-    //                     onChange={setTitle}
-    //                     placeholder="Chọn chức danh"
-    //                 />
-    //             </InputGroup>
-    //             <InputGroup>
-    //                 <Label>Địa điểm làm việc</Label>
-    //                 <Select
-    //                     options={locations}
-    //                     value={location}
-    //                     onChange={setLocation}
-    //                     placeholder="Chọn địa điểm làm việc"
-    //                 />
-    //             </InputGroup>
-    //             <InputGroup>
-    //                 <Label>Mức lương (VND)</Label>
-    //                 <div style={{ display: 'flex', gap: '10px' }}>
-    //                     <Input type="number" placeholder="Từ" />
-    //                     <Input type="number" placeholder="Đến" />
-    //                 </div>
-    //             </InputGroup>
-    //             <InputGroup>
-    //                 <Label>Mong muốn của bạn</Label>
-    //                 <Textarea placeholder="Thông tin thêm về công việc..." rows="4" />
-    //             </InputGroup>
-    //         </Section>
-
-    //         {/* Right section for 'Cập nhật thông tin cá nhân' */}
-    //         <Section>
-    //             <Title>Cập nhật thông tin cá nhân</Title>
-    //             {/* Add your personal information form fields here */}
-    //             {/* You can copy the above input groups and modify them as necessary */}
-    //         </Section>
-    //     </FormContainer>
-    // );
+        }
+    })
+    const handleGetDetailsUser = async (id, token) => {
+        const res = await UserService.getDetailsUser(id, token)
+        dispatch(updateUser({ ...res?.data, access_token: token }))
+        console.log('res', res)
+    }
 
 
-
-
-    const [activeTab, setActiveTab] = useState('desires');
-    const [industry, setIndustry] = useState(null);
-    const [title, setTitle] = useState(null);
-    const [location, setLocation] = useState(null);
-
-    const industries = [
-        { label: 'IT / Phần mềm / IOT / Điện tử viễn thông' },
-        { value: 'as', label: 'coder' },
-        { value: 'am', label: 'marketing' },
-        // Add more options here
-    ];
-
-    const jobTitles = [
-        { value: 'intern', label: 'Thực tập sinh lập trình' },
-        { value: 'senior', label: ' senior NodeJS' },
-        { value: 'junior', label: 'junior Angular' },
-        // Add more options here
-    ];
-
-    const locations = [
-        { value: 'hcm', label: 'Hồ Chí Minh' },
-        { value: 'hn', label: 'Hà Nội' },
-        { value: 'hp', label: 'Hải Phòng' },
-        // Add more options here
-    ];
 
     return (
         <div>
-            <HeaderComponent />
-            <Container>
+            <HeaderComponent user={user}></HeaderComponent>
+            <div style={{ width: '1270px', margin: '0 auto' }}>
+                <WrapperHeader>Thông tin người dùng</WrapperHeader>
+                <WrapperContentProfile>
+                    <WrapperInput>
+                        <WrapperLable htmlFor='name'>name</WrapperLable>
+                        <InputForm style={{ width: '300px' }} value={name} onChange={handleOnchangeName} />
+                        <ButtonComponent
 
-                <Tab>
-                    <button className={activeTab === 'desires' ? 'active' : ''} onClick={() => setActiveTab('desires')}>
-                        Mong muốn của bạn
-                    </button>
-                    <button className={activeTab === 'personal' ? 'active' : ''} onClick={() => setActiveTab('personal')}>
-                        Cập nhật thông tin cá nhân
-                    </button>
-                </Tab>
+                            onClick={handleupdate}
+                            size={40}
 
-                {/* Mong muốn của bạn Section */}
-                <Section isActive={activeTab === 'desires'}>
-                    <FormFieldd>
-                        <label>Ngành nghề</label>
-                        <Select
-                            options={industries}
-                            value={industry}
-                            onChange={setIndustry}
-                            placeholder="Chọn ngành nghề"
-                        />
-                        {/* <input type="text" placeholder="IT / Phần mềm / IOT / Điện tử viễn thông" /> */}
-                    </FormFieldd>
 
-                    <FormFieldd>
-                        <label>Chức danh</label>
-                        <Select
-                            options={jobTitles}
-                            value={title}
-                            onChange={setTitle}
-                            placeholder="Chọn chức danh"
-                        />
-                    </FormFieldd>
+                            styleButton={{
 
-                    <FormFieldd>
-                        <label>Địa điểm làm việc</label>
-                        <Select
-                            options={locations}
-                            value={location}
-                            onChange={setLocation}
-                            placeholder="Chọn địa điểm làm việc"
-                        />
-                    </FormFieldd>
 
-                    <FormFieldd>
-                        <label>Mức lương (VND)</label>
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                            <input type="number" placeholder="Từ" />
-                            <input type="number" placeholder="Đến" />
-                        </div>
-                    </FormFieldd>
+                                width: 'fit-content',
+                                height: '30px',
+                                padding: '4px 6px 6px',
 
-                    <FormFieldd>
-                        <label>Mong muốn của bạn</label>
-                        <textarea placeholder="Thông tin thêm về công việc bạn mong muốn tìm và ứng tuyển..." rows="4" />
-                    </FormFieldd>
+                                border: '1px solid rgb(26,148,255)',
+                                borderRadius: '4px',
 
-                    <SaveButton>Lưu</SaveButton>
-                </Section>
+                            }}
+                            textButton={'Cập nhật'}
+                            styleTextButton={{ color: 'rgb(26,148,255)', fontSize: '15px', fontWeight: '700' }}
+                        ></ButtonComponent>
+                    </WrapperInput>
+                    <WrapperInput>
+                        <WrapperLable htmlFor='email'>Email</WrapperLable>
+                        <InputForm style={{ width: '300px' }} value={email} onChange={handleOnchangeEmail} />
+                        <ButtonComponent
 
-                {/* Cập nhật thông tin cá nhân Section */}
-                <Section isActive={activeTab === 'personal'}>
-                    <FormFieldd>
-                        <label>Họ và tên *</label>
-                        <input type="text" placeholder="Phạm Gia Huy" />
-                    </FormFieldd>
+                            onClick={handleupdate}
+                            size={40}
 
-                    <FormFieldd>
-                        <label>Email *</label>
-                        <input type="email" placeholder="huyzxv123@gmail.com" />
-                    </FormFieldd>
 
-                    <FormFieldd>
-                        <label>Điện thoại *</label>
-                        <input type="text" placeholder="0349369139" />
-                    </FormFieldd>
+                            styleButton={{
 
-                    <FormFieldd>
-                        <label>Địa chỉ *</label>
-                        <textarea placeholder="1124-2A Le Duc Tho Street, Ward 13, Go Vap District, Ho Chi Minh City" rows="3" />
-                    </FormFieldd>
 
-                    <FormFieldd>
-                        <label>Ngày sinh *</label>
-                        <input type="date" />
-                    </FormFieldd>
+                                width: 'fit-content',
+                                height: '30px',
+                                padding: '4px 6px 6px',
 
-                    <FormFieldd>
-                        <label>Giới tính *</label>
-                        <select>
-                            <option value="male">Nam</option>
-                            <option value="female">Nữ</option>
-                        </select>
-                    </FormFieldd>
+                                border: '1px solid rgb(26,148,255)',
+                                borderRadius: '4px',
 
-                    <FormFieldd>
-                        <label>Tình trạng hôn nhân</label>
-                        <select>
-                            <option value="single">Độc thân</option>
-                            <option value="married">Đã kết hôn</option>
-                        </select>
-                    </FormFieldd>
+                            }}
+                            textButton={'Cập nhật'}
+                            styleTextButton={{ color: 'rgb(26,148,255)', fontSize: '15px', fontWeight: '700' }}
+                        ></ButtonComponent>
+                    </WrapperInput>
+                    <WrapperInput>
+                        <WrapperLable htmlFor='phone'>Phone</WrapperLable>
+                        <InputForm style={{ width: '300px' }} value={phone} onChange={handleOnchangePhone} />
+                        <ButtonComponent
 
-                    <SaveButton>Lưu</SaveButton>
-                </Section>
-            </Container>
-            <div style={{ marginTop: '20px' }} >
-                <img style={{ width: '100%' }} src={background1} alt="background"></img>
+                            onClick={handleupdate}
+                            size={40}
+
+
+                            styleButton={{
+
+
+                                width: 'fit-content',
+                                height: '30px',
+                                padding: '4px 6px 6px',
+
+                                border: '1px solid rgb(26,148,255)',
+                                borderRadius: '4px',
+
+                            }}
+                            textButton={'Cập nhật'}
+                            styleTextButton={{ color: 'rgb(26,148,255)', fontSize: '15px', fontWeight: '700' }}
+                        ></ButtonComponent>
+                    </WrapperInput>
+                    <WrapperInput>
+                        <WrapperLable htmlFor='address'>Address</WrapperLable>
+                        <InputForm style={{ width: '300px' }} value={address} onChange={handleOnchangeAddress} />
+                        <ButtonComponent
+
+                            onClick={handleupdate}
+                            size={40}
+
+
+                            styleButton={{
+
+
+                                width: 'fit-content',
+                                height: '30px',
+                                padding: '4px 6px 6px',
+
+                                border: '1px solid rgb(26,148,255)',
+                                borderRadius: '4px',
+
+                            }}
+                            textButton={'Cập nhật'}
+                            styleTextButton={{ color: 'rgb(26,148,255)', fontSize: '15px', fontWeight: '700' }}
+                        ></ButtonComponent>
+                    </WrapperInput>
+                    <WrapperInput>
+
+                        <ButtonComponent
+
+                            onClick={handleupdate}
+                            size={40}
+
+
+                            styleButton={{
+
+
+                                width: 'fit-content',
+                                height: '30px',
+                                padding: '4px 6px 6px',
+
+                                border: '1px solid rgb(26,148,255)',
+                                borderRadius: '4px',
+
+                            }}
+                            textButton={'Cập nhật'}
+                            styleTextButton={{ color: 'rgb(26,148,255)', fontSize: '15px', fontWeight: '700' }}
+                        ></ButtonComponent>
+                    </WrapperInput>
+
+                </WrapperContentProfile>
             </div>
-            <FooterComponent />
+            <FooterComponent></FooterComponent>
         </div>
-    );
+
+    )
+
 }
 export default ProfilePage
